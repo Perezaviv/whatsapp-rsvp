@@ -1,5 +1,5 @@
 
-import type { Request, Response } from 'express';
+import express from 'express';
 import { prisma } from '../services/db';
 import { sendMessage } from '../services/whatsapp';
 import { RsvpStatus, ProcessedResponse } from '../types';
@@ -22,7 +22,7 @@ const processManualReply = (message: string): ProcessedResponse => {
 };
 
 // Get all guests from the database
-export const getAllGuests = async (req: Request, res: Response) => {
+export const getAllGuests = async (req: express.Request, res: express.Response) => {
   try {
     const guests = await prisma.guest.findMany({
       orderBy: { createdAt: 'asc' }
@@ -35,7 +35,7 @@ export const getAllGuests = async (req: Request, res: Response) => {
 };
 
 // Send an invitation message
-export const sendRsvpMessage = async (req: Request<{ guestId: string }>, res: Response) => {
+export const sendRsvpMessage = async (req: express.Request<{ guestId: string }>, res: express.Response) => {
     const { guestId } = req.params;
     try {
         const guest = await prisma.guest.findUnique({ where: { id: guestId } });
@@ -63,7 +63,7 @@ export const sendRsvpMessage = async (req: Request<{ guestId: string }>, res: Re
 };
 
 // Simulate a reply for testing purposes from the frontend
-export const simulateReply = async (req: Request<{ guestId: string }, any, { message: string }>, res: Response) => {
+export const simulateReply = async (req: express.Request<{ guestId: string }, any, { message: string }>, res: express.Response) => {
     const { guestId } = req.params;
     const { message } = req.body;
 
@@ -98,7 +98,7 @@ export const simulateReply = async (req: Request<{ guestId: string }, any, { mes
 
 
 // Handle REAL incoming webhooks from WhatsApp
-export const handleWhatsAppWebhook = async (req: Request, res: Response) => {
+export const handleWhatsAppWebhook = async (req: express.Request, res: express.Response) => {
     // Handle verification challenge from Meta
     if (req.method === 'GET') {
         const mode = req.query['hub.mode'];
