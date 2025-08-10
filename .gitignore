@@ -1,0 +1,43 @@
+# Node.js / General
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnp.*
+
+# Build output
+dist/
+/backend/dist/
+/frontend/dist/
+
+# Environment Variables
+# NEVER commit .env files - they contain secrets!
+.env
+.env.*
+!.env.example
+!.env.sample 
+
+# Database files
+# For local SQLite databases
+*.db
+*.db-journal
+
+# Prisma
+/backend/prisma/dev.db
+
+# Logs
+logs
+*.log
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs
+*.njsproj
+*.sln
+*.sw?
