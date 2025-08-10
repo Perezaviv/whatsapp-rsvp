@@ -48,7 +48,7 @@ export const sendRsvpMessage = async (req: express.Request<{ guestId: string }>,
         
         const updatedGuest = await prisma.guest.update({
             where: { id: guestId },
-            data: { status: RsvpStatus.SENT, lastUpdate: new Date().toISOString() }
+            data: { status: RsvpStatus.SENT }
         });
 
         res.json(updatedGuest);
@@ -56,7 +56,7 @@ export const sendRsvpMessage = async (req: express.Request<{ guestId: string }>,
         console.error(`Failed to send message to guest ${guestId}:`, error);
         await prisma.guest.update({
             where: { id: guestId },
-            data: { status: RsvpStatus.FAILED, lastUpdate: new Date().toISOString() }
+            data: { status: RsvpStatus.FAILED }
         });
         res.status(500).json({ error: 'Failed to send message' });
     }
@@ -85,7 +85,6 @@ export const simulateReply = async (req: express.Request<{ guestId: string }, an
                 status: processed.status,
                 attendeesCount: processed.attendeesCount,
                 responseMessage: message,
-                lastUpdate: new Date().toISOString(),
             }
         });
         res.json(updatedGuest);
@@ -146,7 +145,6 @@ export const handleWhatsAppWebhook = async (req: express.Request, res: express.R
                         status: processed.status,
                         attendeesCount: processed.attendeesCount,
                         responseMessage: messageText,
-                        lastUpdate: new Date().toISOString(),
                     }
                 });
                 
